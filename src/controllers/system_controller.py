@@ -1,4 +1,4 @@
-import psutil,asyncio,socket,platform,time
+import psutil,asyncio,socket,platform,time,subprocess,json,os,random
 
 class HostController:
     def __init__(self,view):
@@ -149,4 +149,85 @@ class StorageController:
         return self._percent
 
     
+class SystemController:
+
+    @staticmethod
+    def get_total_memory():
+        mem = psutil.virtual_memory()
+        total_memory = (mem.total//(1024**2))
+
+        file = "src/data/machines.json"
+        used = 0
+        if os.path.exists(file):
+            with open(file, "r") as f:
+                try:
+                    vms = json.load(f)
+                    for vm in vms:
+                        used += int(vm["memory"])
+                except Exception:
+                    pass
+        return int(total_memory-used)
+    
+    @staticmethod
+    def get_total_vcpus():
+        cpu = psutil.cpu_count(logical=True)
+        file = "src/data/machines.json"
+        used = 0
+        if os.path.exists(file):
+            with open(file, "r") as f:
+                try:
+                    vms = json.load(f)
+                    for vm in vms:
+                        used += int(vm["vcpus"])
+                except Exception:
+                    pass
+        return int(cpu-used)
+
+    @staticmethod
+    def get_total_storage():
+        storage = psutil.disk_usage('/')
+        total_storage = (storage.total // (1024**3))
+        file = "src/data/machines.json"
+        used = 0
+        if os.path.exists(file):
+            with open(file, "r") as f:
+                try:
+                    vms = json.load(f)
+                    for vm in vms:
+                        used += int(vm["disk"])
+                except Exception:
+                    pass
+        return int(total_storage - used)
+    
+    @staticmethod
+    def get_iso_images():
+        images_path = '/home/xen/operations_systems/'
+        images = []
+        try:
+            images = subprocess.run(['ls', f'{images_path}'], text=True, stdout=subprocess.PIPE).stdout.splitlines()
+        except subprocess.CalledProcessError as e:
+            # print(f"Error: {e}")
+            pass
+        return images
+    
+    @staticmethod
+    def get_random_mac():
+        hex_list = ['a','b','c','d','e','f',1,2,3,4,5,6,7,8,9]
+        output_list = [str(random.choice(hex_list)) + str(random.choice(hex_list)) for n in range(6)]
+        return ":".join(output_list)
+
+    @staticmethod
+    def get_vnc_port():
+        file = "src/data/machines.json"
+        if os.path.exists(file):
+            with open(file, "r") as f:
+                try:
+                    vms = json.load(f)
+                    port = int(len(vms))
+                except Exception:
+                    pass
+
         
+        return port
+    
+    

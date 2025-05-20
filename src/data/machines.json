@@ -1,0 +1,38 @@
+[
+    {
+        "name": "GDL-SRV-1",
+        "vcpus": 4,
+        "memory": 4096,
+        "disk": 120,
+        "firmware": "BIOS",
+        "iso_image": "Win10_22H2_Spanish_Mexico_x64v1.iso",
+        "mac_adress": "9d:ed:5e:89:6b:e6",
+        "vnc_port": 0,
+        "status": false,
+        "delete": false
+    },
+    {
+        "name": "GDL-SRV-2",
+        "vcpus": 4,
+        "memory": 4240,
+        "disk": 120,
+        "firmware": "BIOS",
+        "iso_image": "Win10_22H2_Spanish_Mexico_x64v1.iso",
+        "mac_adress": "6c:b8:86:79:3f:78",
+        "vnc_port": 1,
+        "status": false,
+        "delete": false
+    },
+    {
+        "name": "SRV-PRUEBA-1",
+        "vcpus": 2,
+        "memory": 4096,
+        "disk": 120,
+        "firmware": "BIOS",
+        "iso_image": "Win10_22H2_Spanish_Mexico_x64v1.iso",
+        "mac_adress": "53:b5:a9:2b:32:62",
+        "vnc_port": 2,
+        "status": false,
+        "delete": false
+    }
+]

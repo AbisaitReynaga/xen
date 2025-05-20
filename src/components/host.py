@@ -2,6 +2,7 @@ import flet as ft
 
 from components import CustomContainer
 from controllers import CPUController, HostController,RAMController,StorageController
+from controllers import SystemController
 
 
 class HostInformation(CustomContainer):
@@ -78,7 +79,7 @@ class HostInformation(CustomContainer):
                     width=100,
                     color="white"),
                 ft.Text(
-                    f"{self.host_controller.get_cpu_threads()} Thereads",
+                    f"{self.host_controller.get_cpu_threads()} Cores",
                     color="white")
             ]
         )
@@ -128,7 +129,6 @@ class HostInformation(CustomContainer):
 
     def will_unmount(self):
         self.host_controller.stop()
-
 
 class CPUChartUsage(CustomContainer):
     def __init__(self):
@@ -202,7 +202,6 @@ class CPUChartUsage(CustomContainer):
             height=20
         )
 
-
 class RAMChartUsage(CustomContainer):
     def __init__(self):
         super().__init__()
@@ -271,6 +270,7 @@ class RAMChartUsage(CustomContainer):
 
     def will_unmount(self):
         self.controller.stop()
+
 class StorageChartUsage(CustomContainer):
     def __init__(self):
         super().__init__()
@@ -298,7 +298,7 @@ class StorageChartUsage(CustomContainer):
         self.bar_fill = ft.Container(
             width=3 * self.storage_controller.get_percent_disk(),  # Escala a 300px
             height=20,
-            bgcolor="#FFBF00",  # color verdoso para almacenamiento
+            bgcolor="#3be38b",  # color verdoso para almacenamiento
             border_radius=10
         )
 
@@ -323,3 +323,58 @@ class StorageChartUsage(CustomContainer):
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             expand=True
         )
+
+class CPUChartAvaiable(CustomContainer):
+    def __init__(self):
+        super().__init__()
+        self._controller = SystemController()
+        self.cores_text = ft.Text(f"{self._controller.get_total_vcpus()} Cores", size=28, color="#3be38b")
+
+        self.content = ft.Column(
+            alignment=ft.MainAxisAlignment.CENTER,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        
+            controls=[
+                self.cores_text,
+                ft.Container(height=30),
+                ft.Text("CPU Available", size=22, weight='bold', color='white'),
+                
+            ]
+        )
+
+class RAMChartAvailable(CustomContainer):
+    def __init__(self):
+        super().__init__()
+        self._controller = SystemController()
+        self.memory_text = ft.Text(f"{self._controller.get_total_memory()} MB", size=28, color="#3be38b")
+
+        self.content = ft.Column(
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+
+                controls=[
+                    self.memory_text,
+                    ft.Container(height=30),
+                    ft.Text("RAM Available", size=22, weight='bold', color='white'),
+                    
+                ]
+            )
+
+class StorageChartAvailable(CustomContainer):
+    def __init__(self):
+        super().__init__()
+        self._controller = SystemController()
+        self.storage_text = ft.Text(f"{self._controller.get_total_storage()} GB", size=28, color="#3be38b")
+
+        self.content = ft.Column(
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+
+                controls=[
+                    self.storage_text,
+                    ft.Container(height=30),
+                    ft.Text("Storage Available", size=22, weight='bold', color='white'),
+                    
+                ]
+            )
+    

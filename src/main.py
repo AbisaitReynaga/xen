@@ -1,5 +1,5 @@
 import flet as ft
-from views import home_view
+from views import home_view,create_vm_view
 
 
 def main(page: ft.Page):
@@ -11,10 +11,10 @@ def main(page: ft.Page):
             page.views.append(
                 home_view(page)
             )
-        # elif page.route == "/create_vm":
-        #     page.views.append(
-        #         create_vm_view(page)
-        #     )
+        elif page.route == "/create_vm":
+            page.views.append(
+                create_vm_view(page)
+            )
         page.update()
 
     def view_pop(view):
